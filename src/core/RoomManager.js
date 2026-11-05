@@ -7,9 +7,11 @@ import { Boss } from '../entities/Boss.js';
 import { getEnemyScale } from '../systems/Difficulty.js';
 
 export class RoomManager {
-  constructor(game){this.game=game;this.room=1;this.stage=STAGES[0];this.type='normal';this.obstacles=[];this.cleared=false;}
+  constructor(game){this.game=game;this.room=1;this.stage=STAGES[0];this.type='normal';this.obstacles=[];this.cleared=false;this.stageIndex=-1;this.summonersSpawned=0;}
   enter(room){
     const g=this.game;this.room=room;this.stage=stageForRoom(room);this.type=roomType(room);this.cleared=false;g.pendingReward=false;
+    const nextStageIndex=Math.floor((room-1)/4);
+    if(nextStageIndex!==this.stageIndex){this.stageIndex=nextStageIndex;this.summonersSpawned=0;}
     g.enemies=[];g.boss=null;g.enemyProjectiles=[];g.playerProjectiles=[];g.hazards=[];
     this.generateLayout();
     if(this.type==='boss'){
@@ -22,14 +24,21 @@ export class RoomManager {
       const count=Math.min(13,3+Math.floor(room*.48)+(this.type==='elite'?2:0));
       const pool=ENEMY_POOLS[this.stage.id-1];const scale=getEnemyScale(g.player,room,'normal');
       for(let i=0;i<count;i++){
-        const type=pool[Math.floor(Math.random()*pool.length)];const pos=this.spawnPosition();
+        const type=this.chooseEnemyType(pool);const pos=this.spawnPosition();
         const enemy=new Enemy(type,pos.x,pos.y,scale.hp,false);enemy.damage*=scale.damage;enemy.speed*=scale.speed;
         if(this.type==='elite'&&i===0){enemy.elite=true;enemy.hp*=2.2;enemy.maxHp=enemy.hp;enemy.damage*=1.25;enemy.r*=1.2;}
         g.enemies.push(enemy);
       }
-      if(room>=6&&room%3===0&&g.enemies.length<14){const pos=this.spawnPosition();const type=pool[Math.floor(Math.random()*pool.length)];const elite=new Enemy(type,pos.x,pos.y,scale.hp*1.25,true);elite.damage*=scale.damage;g.enemies.push(elite);}
+      if(room>=6&&room%3===0&&g.enemies.length<14){const pos=this.spawnPosition();const type=this.chooseEnemyType(pool);const elite=new Enemy(type,pos.x,pos.y,scale.hp*1.25,true);elite.damage*=scale.damage;g.enemies.push(elite);}
     }
     g.state='playing';g.ui.hideOverlay();g.ui.showHud(true);g.updateHud();g.toast(`${this.stage.name} · ROOM ${String(room).padStart(2,'0')}`,this.stage.ambient);
+  }
+  chooseEnemyType(pool){
+    const candidates=this.summonersSpawned>=2?pool.filter(type=>type!=='summoner'):pool;
+    const safePool=candidates.length?candidates:pool.filter(type=>type!=='summoner');
+    const type=safePool[Math.floor(Math.random()*safePool.length)]||'grunter';
+    if(type==='summoner')this.summonersSpawned++;
+    return type;
   }
   spawnPosition(minDistance=270){
     const a=CONFIG.arena,player=this.game.player;

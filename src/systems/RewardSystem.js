@@ -1,7 +1,7 @@
 import { ITEMS, STAT_REWARDS } from '../data/items.js';
 import { CONFIG } from '../config.js';
 export class RewardSystem {
-  constructor(game){this.game=game;this.last=[];}
+  constructor(game){this.game=game;this.last=[];this.lastIsBoss=false;}
   pickGrade(){const r=Math.random();return r<CONFIG.rarity.S?'S':r<CONFIG.rarity.S+CONFIG.rarity.A?'A':'B';}
   makeChoices(){
     const p=this.game.player;const out=[];const used=new Set();
@@ -10,12 +10,23 @@ export class RewardSystem {
       for(let tries=0;tries<24&&!option;tries++){
         // Stat options are a reliable common choice; item rarity percentages remain exact for item rolls.
         if(Math.random()<.32){const pool=STAT_REWARDS.filter(x=>!used.has(x.id));if(pool.length)option=pool[Math.floor(Math.random()*pool.length)];}
-        if(!option){const grade=this.pickGrade();let pool=ITEMS.filter(x=>x.grade===grade&&!used.has(x.id));pool=pool.filter(x=>!p.has(x.id)||x.stackable);if(pool.length)option=pool[Math.floor(Math.random()*pool.length)];}
+        if(!option){const grade=this.pickGrade();let pool=ITEMS.filter(x=>x.grade===grade&&!x.bossOnly&&!used.has(x.id));pool=pool.filter(x=>!p.has(x.id)||x.stackable);if(pool.length)option=pool[Math.floor(Math.random()*pool.length)];}
       }
       if(!option){const pool=STAT_REWARDS.filter(x=>!used.has(x.id));option=pool[0]||STAT_REWARDS[i%STAT_REWARDS.length];}
       used.add(option.id);out.push(option);
     }
-    this.last=out;return out;
+    this.last=out;this.lastIsBoss=false;return out;
+  }
+  makeBossChoices(){
+    const p=this.game.player;
+    const pool=ITEMS.filter(item=>item.grade==='S'&&(!p.has(item.id)||item.stackable));
+    // The repeatable, boss-exclusive Sovereign Ember guarantees an S-grade option even
+    // when the player has already collected every unique S-grade relic.
+    const shuffled=[...pool];
+    for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+    const out=shuffled.slice(0,3);
+    if(!out.length){const fallback=ITEMS.find(item=>item.id==='sovereign_ember');if(fallback)out.push(fallback);}
+    this.last=out;this.lastIsBoss=true;return out;
   }
   choose(option){
     const p=this.game.player;
@@ -28,6 +39,8 @@ export class RewardSystem {
       this.game.effects.burst(p.x,p.y,item.grade==='S'?'#b98be7':item.grade==='A'?'#8ab9e6':'#d9b56d',26,190);
     }
     this.game.audio.play('item');
-    this.game.roomManager.next();return true;
+    if(this.game.roomManager.room>=CONFIG.totalRooms)this.game.win();
+    else this.game.roomManager.next();
+    return true;
   }
 }

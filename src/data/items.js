@@ -38,7 +38,8 @@ export const ITEMS = [
   {id:'phantom_oath',name:'망령의 서약',grade:'S',icon:'🧿',desc:'적 처치 시 20% 확률로 분신 탄환이 생성된다.',effect:{cloneChance:0.20},stackable:false},
   {id:'void_lance',name:'공허의 창',grade:'S',icon:'🔱',desc:'기본 공격이 강력한 관통 창으로 변화한다.',effect:{laser:true,pierce:5,attack:0.25},stackable:false},
   {id:'frozen_moment',name:'정지된 순간',grade:'S',icon:'⌛',desc:'치명타 발생 시 주변 적의 시간이 잠시 멈춘다.',effect:{timeStop:true,crit:0.08},stackable:false},
-  {id:'blood_contract',name:'피의 계약',grade:'S',icon:'📜',desc:'최대 체력 20%를 바치고 공격력 +65%.',effect:{sacrifice:true,attack:0.65},stackable:false}
+  {id:'blood_contract',name:'피의 계약',grade:'S',icon:'📜',desc:'최대 체력 20%를 바치고 공격력 +65%.',effect:{sacrifice:true,attack:0.65},stackable:false},
+  {id:'sovereign_ember',name:'군주의 잔재',grade:'S',icon:'🔥',desc:'공격력 +12%, 최대 체력 +8%. 보스 보상에서 중복 획득 가능.',effect:{attack:0.12,maxHp:0.08},stackable:true,bossOnly:true}
 ];
 
 export const STAT_REWARDS = [

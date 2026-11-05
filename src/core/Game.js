@@ -33,7 +33,7 @@ export class Game {
   }
   toMenu(){this.state='menu';this.audio.stopMusic();this.input.clear();this.ui.show(false);this.menu.menu();}
   pause(){if(this.state==='playing'||this.state==='reward'){this.pausedFrom=this.state;this.state='paused';this.menu.pause();}}
-  resume(){if(this.state==='paused'){this.state=this.pausedFrom||'playing';if(this.state==='reward')this.rewardScreen.show(this.rewards.last,this.roomManager.room);else this.menu.hide();}}
+  resume(){if(this.state==='paused'){this.state=this.pausedFrom||'playing';if(this.state==='reward')this.rewardScreen.show(this.rewards.last,this.roomManager.room,this.roomManager.type==='boss');else this.menu.hide();}}
   toast(message,color){const el=document.getElementById('toast');el.textContent=message;el.style.color=color||'#e8d2a9';el.classList.add('show');clearTimeout(this.toastTimer);this.toastTimer=setTimeout(()=>el.classList.remove('show'),1700);}
   formatTime(s){s=Math.max(0,Math.floor(s));return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
   updateHud(){if(this.player)this.ui.update(this);}
@@ -77,8 +77,9 @@ export class Game {
   completeRoom(){
     if(this.state!=='playing'||this.pendingReward)return;this.pendingReward=true;
     if(this.player.healOnRoom)this.player.heal(this.player.healOnRoom);this.applyRoomMilestoneHeal();
-    if(this.roomManager.room>=CONFIG.totalRooms){this.win();return;}
-    this.state='reward';const choices=this.rewards.makeChoices();this.rewardScreen.show(choices,this.roomManager.room);this.updateHud();this.audio.play('item');
+    const bossReward=this.roomManager.type==='boss';
+    if(this.roomManager.room>=CONFIG.totalRooms&&!bossReward){this.win();return;}
+    this.state='reward';const choices=bossReward?this.rewards.makeBossChoices():this.rewards.makeChoices();this.rewardScreen.show(choices,this.roomManager.room,bossReward);this.updateHud();this.audio.play('item');
   }
   win(){if(this.roomManager?.room===20)this.applyRoomMilestoneHeal();this.state='victory';this.elapsed=Math.max(0,this.elapsed);this.pendingReward=false;this.audio.stopMusic();this.ui.show(false);this.resultScreen.show(true);this.audio.play('win');}
   gameOver(){if(this.state==='gameover'||this.state==='victory')return;this.state='gameover';this.audio.stopMusic();this.ui.show(false);this.pendingReward=false;this.resultScreen.show(false);}
@@ -97,7 +98,7 @@ export class Game {
     this.updateProjectiles(dt);this.updateHazards(dt);this.updateSpirit(dt);
     this.enemies=this.enemies.filter(e=>!e.dead);
     if(this.player.hp<=0){this.gameOver();return;}
-    if(this.boss?.dead){if(this.roomManager.room===20)this.win();else this.completeRoom();return;}
+    if(this.boss?.dead){this.completeRoom();return;}
     if(!this.boss&&this.enemies.length===0)this.completeRoom();
     this.hudTick+=dt;if(this.hudTick>.12){this.hudTick=0;this.updateHud();}
   }

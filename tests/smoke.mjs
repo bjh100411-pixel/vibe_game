@@ -45,13 +45,48 @@ const { ENEMIES } = await import('../src/data/enemies.js');
 const { BOSSES } = await import('../src/data/bosses.js');
 const { CONFIG } = await import('../src/config.js');
 const { Boss } = await import('../src/entities/Boss.js');
+const { RoomManager } = await import('../src/core/RoomManager.js');
+const { RewardSystem } = await import('../src/systems/RewardSystem.js');
 
-assert.equal(ITEMS.length, 36);
+assert.equal(ITEMS.length, 37);
 assert.equal(ITEMS.filter(item => item.grade === 'B').length, 18);
 assert.equal(ITEMS.filter(item => item.grade === 'A').length, 11);
-assert.equal(ITEMS.filter(item => item.grade === 'S').length, 7);
+assert.equal(ITEMS.filter(item => item.grade === 'S').length, 8);
 assert.equal(Object.keys(ENEMIES).length, 8);
 assert.equal(Object.keys(BOSSES).length, 3);
+assert.equal(ENEMIES.summoner.rate, 2.8, 'summoner cooldown is increased from 2.2s to 2.8s');
+const summonQuotaManager = new RoomManager({});
+const originalRandomForQuota = Math.random;
+Math.random = () => 0;
+const quotaRolls = Array.from({ length: 7 }, () => summonQuotaManager.chooseEnemyType(['summoner', 'grunter']));
+Math.random = originalRandomForQuota;
+assert.equal(quotaRolls.filter(type => type === 'summoner').length, 2, 'a stage can spawn at most two summoners');
+assert.equal(quotaRolls[2], 'grunter', 'summoners are excluded once the stage quota is reached');
+const stageResetPlayer = new Player(640, 360);
+stageResetPlayer.attachCatalog(ITEMS);
+const stageResetGame = {
+  player: stageResetPlayer, enemies: [], boss: null, pendingReward: false,
+  enemyProjectiles: [], playerProjectiles: [], hazards: [], state: 'playing',
+  ui: { hideOverlay() {}, showHud() {} }, updateHud() {}, toast() {}, audio: { play() {} }
+};
+const stageResetManager = new RoomManager(stageResetGame);
+stageResetGame.roomManager = stageResetManager;
+stageResetManager.stageIndex = 0;
+stageResetManager.summonersSpawned = 2;
+stageResetManager.enter(5);
+assert.equal(stageResetManager.summonersSpawned, 0, 'summoner quota resets when the next stage begins');
+
+const bossRewardPlayer = new Player(0, 0);
+bossRewardPlayer.attachCatalog(ITEMS);
+const bossRewardSystem = new RewardSystem({ player: bossRewardPlayer });
+const guaranteedBossChoices = bossRewardSystem.makeBossChoices();
+assert.equal(guaranteedBossChoices.length, 3, 'boss reward offers three choices');
+assert.ok(guaranteedBossChoices.every(item => item.grade === 'S' && item.kind !== 'stat'), 'boss reward choices are exclusively S-grade relics');
+for (const item of ITEMS.filter(item => item.grade === 'S' && !item.stackable)) bossRewardPlayer.addItem(item);
+const fallbackBossChoices = bossRewardSystem.makeBossChoices();
+assert.ok(fallbackBossChoices.length >= 1 && fallbackBossChoices.every(item => item.grade === 'S'), 'boss still guarantees an S relic when all unique S relics are owned');
+assert.ok(fallbackBossChoices.some(item => item.id === 'sovereign_ember'), 'repeatable boss-only S relic is available as the fallback');
+assert.ok(!bossRewardSystem.makeChoices().some(item => item.id === 'sovereign_ember'), 'boss-only fallback does not appear in ordinary room rewards');
 
 // Device detection and touch controls: coarse-pointer devices get the joystick/action buttons.
 const desktopInput = new Input(canvas);
@@ -285,13 +320,23 @@ assert.equal(game.pendingReward, false);
 // Drive every room through the actual room manager and reward system.
 for (let room = 2; room <= 20; room++) {
   assert.equal(game.roomManager.room, room);
+  assert.ok(game.roomManager.summonersSpawned <= 2, `stage ${Math.floor((room - 1) / 4) + 1} never exceeds two summoners`);
   if (game.boss) game.damageBoss(99999999);
   else for (const enemy of [...game.enemies]) game.damageEnemy(enemy, 999999);
   game.update(0.016);
   if (room === 20) {
-    assert.equal(game.state, 'victory', 'final boss defeat triggers victory');
+    assert.equal(game.state, 'reward', 'final boss now opens its guaranteed S-grade reward before victory');
+    assert.ok(game.rewards.last.length >= 1 && game.rewards.last.every(item => item.grade === 'S'), 'final boss offers only S-grade relics');
+    assert.ok(document.getElementById('overlay').innerHTML.includes('S급 유물 선택'), 'final boss also shows the guaranteed S-grade reward UI');
+    game.rewards.choose(game.rewards.last[0]);
+    assert.equal(game.state, 'victory', 'choosing the final boss S relic triggers victory');
+    assert.ok(document.getElementById('overlay').innerHTML.includes('VICTORY'), 'final boss reward selection preserves the victory screen');
   } else {
     assert.equal(game.state, 'reward', `room ${room} must offer a reward`);
+    if (room === 8 || room === 16) {
+      assert.ok(game.rewards.last.length >= 1 && game.rewards.last.every(item => item.grade === 'S' && item.kind !== 'stat'), `boss ${room} guarantees S-grade relic choices`);
+      assert.ok(document.getElementById('overlay').innerHTML.includes('S급 유물 선택'), `boss ${room} reward screen is labeled as S-grade selection`);
+    }
     game.rewards.choose(game.rewards.last[0]);
     assert.equal(game.roomManager.room, room + 1, 'reward selection opens the next room');
   }
