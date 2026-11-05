@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="theme-color" content="#0b0c12" />
+  <title>ASHEN VEIL — 로그라이크 생존기</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main id="game-shell">
+    <div id="game-frame">
+    <canvas id="game" width="1280" height="720" aria-label="Ashen Veil 게임 화면"></canvas>
+    <section id="hud" class="hud hidden">
+      <div class="hud-top">
+        <div class="brand-mark"><span class="sigil">✦</span><div><b>ASHEN VEIL</b><small id="stage-label">잿빛 지하묘지 · STAGE 1</small></div></div>
+        <div class="progress-wrap"><div class="progress-line"><span id="room-label">ROOM 01 / 20</span><span id="timer-label">00:00</span></div><div class="progress-track"><i id="stage-progress"></i></div></div>
+        <button class="icon-btn" id="pause-btn" aria-label="일시정지">Ⅱ</button>
+      </div>
+      <div class="hud-left">
+        <div class="panel-title">RELICS <span id="item-count">0</span></div>
+        <div id="inventory" class="inventory"><span class="empty-note">아직 획득한 유물이 없습니다</span></div>
+      </div>
+      <div class="hud-right">
+        <div class="panel-title">PLAYER STATUS</div>
+        <div class="stat-grid">
+          <div><small>ATK</small><b id="stat-atk">10</b></div><div><small>SPD</small><b id="stat-spd">1.0</b></div>
+          <div><small>DEF</small><b id="stat-def">0</b></div><div><small>CRIT</small><b id="stat-crit">5%</b></div>
+          <div><small>MOVE</small><b id="stat-move">220</b></div><div><small>MAX HP</small><b id="stat-maxhp">100</b></div>
+          <div><small>CRIT DMG</small><b id="stat-critdmg">160%</b></div><div><small>DODGE</small><b id="stat-dodge">2%</b></div>
+          <div><small>탄환 크기</small><b id="stat-projectile-size">1.0x</b></div><div><small>PROJECTILE</small><b id="stat-proj">420</b></div>
+          <div><small>XP GAIN</small><b id="stat-xp">1.0x</b></div>
+        </div>
+        <div class="xp-row"><span>EXPERIENCE</span><span id="xp-label">0 / 100</span></div><div class="xp-track"><i id="xp-fill"></i></div>
+      </div>
+      <div class="hud-bottom">
+        <div class="health-wrap"><div class="health-label"><span>VITALITY</span><b id="hp-label">100 / 100</b></div><div class="health-track"><i id="hp-fill"></i></div></div>
+        <div class="skill-chip dash-chip"><span class="keycap">SPACE</span><span class="skill-name">회피</span><b id="dash-time" class="skill-time">준비</b><i id="dash-cool"></i></div>
+        <div class="skill-chip special-chip"><span class="keycap">Q</span><span class="skill-name">영혼 폭발</span><b id="special-time" class="skill-time">준비</b><i id="special-cool"></i></div>
+        <div class="hint">WASD 이동 · 마우스 조준/자동 공격 · SPACE 회피 · Q 필살기 · ESC 일시정지</div>
+      </div>
+      <div id="mobile-controls" class="mobile-controls" aria-label="모바일 조작">
+        <div id="virtual-joystick" class="virtual-joystick" role="application" aria-label="가상 이동 조이스틱">
+          <div class="joystick-ring"></div><div id="joystick-knob" class="joystick-knob"></div>
+          <span class="joystick-caption">MOVE</span>
+        </div>
+        <div class="mobile-action-buttons">
+          <button id="mobile-dash" class="mobile-action dash-action" type="button" aria-label="회피">
+            <b>회피</b><span id="dash-touch-time">준비</span>
+          </button>
+          <button id="mobile-special" class="mobile-action special-action" type="button" aria-label="영혼 폭발">
+            <b>필살기</b><span id="special-touch-time">준비</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <div id="overlay" class="overlay"></div>
+    <div id="toast" class="toast"></div>
+    </div>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

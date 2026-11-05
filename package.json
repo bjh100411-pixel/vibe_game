@@ -1,0 +1,41 @@
+{
+  "name": "ashen-veil-roguelike",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Ashen Veil - browser-first dark fantasy roguelike action game",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "serve": "python -m http.server 8000",
+    "desktop": "electron .",
+    "dist": "electron-builder",
+    "test": "node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.ashenveil.roguelike",
+    "productName": "Ashen Veil",
+    "files": [
+      "index.html",
+      "style.css",
+      "src/**/*",
+      "desktop/**/*",
+      "README.md"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "type": "module"
+}

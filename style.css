@@ -1,0 +1,107 @@
+:root{--bg:#090a10;--panel:#11131c;--panel2:#171a25;--line:#303344;--muted:#9295a7;--text:#f1f0eb;--gold:#d9b56d;--red:#d85c63;--green:#78c79b;--purple:#a786e8;--blue:#79a9e8}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif}button{font:inherit}#game-shell{position:relative;width:100vw;height:100vh;min-height:520px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 45%,#1c1a25 0,#0b0c12 67%);overflow:hidden}#game-frame{position:relative;width:min(100vw,177.7778vh);height:min(100vh,56.25vw);overflow:hidden;box-shadow:0 0 90px #000b;background:#0b0d13}#game{width:100%;height:100%;display:block;image-rendering:pixelated;background:#0b0d13}
+.hud{position:absolute;inset:0;pointer-events:none}.hidden{display:none!important}.hud-top{height:74px;position:absolute;top:0;left:0;right:0;padding:13px 24px;display:flex;align-items:center;gap:24px;background:linear-gradient(180deg,#090a10f2,#090a10aa);border-bottom:1px solid #33303a}.brand-mark{display:flex;align-items:center;gap:11px;width:255px}.sigil{font-size:28px;color:var(--gold);text-shadow:0 0 18px #d9b56d66}.brand-mark b{font-family:Impact,'Arial Black',sans-serif;letter-spacing:2px;font-size:17px}.brand-mark small{display:block;color:#aaa3a0;font-size:10px;letter-spacing:1.2px;margin-top:1px}.progress-wrap{flex:1;max-width:480px;margin:0 auto}.progress-line{display:flex;justify-content:space-between;color:#c6c2bd;font:11px 'Consolas','Courier New',monospace;letter-spacing:1px;margin-bottom:7px}.progress-track,.health-track,.xp-track{height:5px;background:#31313c;border-radius:10px;overflow:hidden}.progress-track i{display:block;height:100%;width:5%;background:linear-gradient(90deg,#977447,#e6c985);transition:width .3s}.icon-btn{pointer-events:auto;width:38px;height:38px;border:1px solid #57505a;background:#17151f;color:#e7d7b4;border-radius:7px;font-size:17px;cursor:pointer}.hud-left,.hud-right{position:absolute;top:91px;width:155px;padding:11px 10px;background:#10121bc9;border:1px solid #333440;border-radius:8px;backdrop-filter:blur(4px)}.hud-left{left:18px}.hud-right{right:18px;width:166px}.panel-title{font:10px 'Consolas','Courier New',monospace;letter-spacing:1.6px;color:#c9b17e;padding-bottom:9px;border-bottom:1px solid #30313d;margin-bottom:8px}.panel-title span{float:right;color:#85889a}.inventory{display:flex;flex-wrap:wrap;gap:6px;min-height:52px}.inventory-item{width:38px;height:38px;border:1px solid #776047;background:linear-gradient(135deg,#2b241c,#171922);border-radius:5px;display:grid;place-items:center;font-size:17px;position:relative;cursor:help}.inventory-item b{position:absolute;right:2px;bottom:0;font:9px 'Consolas','Courier New',monospace;color:white;text-shadow:0 1px 2px black}.inventory-item.grade-A{border-color:#6f83aa;background:#1b2634}.inventory-item.grade-S{border-color:#a985d9;background:#30213b;box-shadow:0 0 9px #a985d933}.empty-note{font-size:10px;color:#737788;line-height:1.5}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 6px}.stat-grid div{background:#191b27;padding:7px;border-radius:4px}.stat-grid small{display:block;color:#888b9c;font:9px 'Consolas','Courier New',monospace;letter-spacing:1px}.stat-grid b{font:14px 'DM Mono';color:#e8e0d2;display:block;margin-top:3px}.xp-row{display:flex;justify-content:space-between;color:#9395a3;font:9px 'Consolas','Courier New',monospace;margin:13px 0 6px}.xp-track{height:4px}.xp-track i{display:block;height:100%;width:0;background:#79a9e8}.hud-bottom{position:absolute;left:18px;right:18px;bottom:14px;display:flex;align-items:center;gap:14px;pointer-events:none}.health-wrap{width:260px;padding:9px 12px;background:#10121bdc;border:1px solid #353541;border-radius:6px}.health-label{display:flex;justify-content:space-between;font:10px 'Consolas','Courier New',monospace;letter-spacing:1px;margin-bottom:7px;color:#e5c9c5}.health-label b{color:#f5e8e3}.health-track{height:8px;background:#3b252c}.health-track i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#9d394c,#ed7770);transition:width .2s}.skill-chip{height:39px;min-width:104px;padding:5px 9px;display:flex;align-items:center;gap:7px;border:1px solid #393946;background:#11131ddd;border-radius:6px;color:#c6c4cc;font-size:10px;position:relative}.keycap{font:10px 'Consolas','Courier New',monospace;padding:4px 5px;border:1px solid #75664b;border-radius:3px;color:#e8ce96}.skill-chip i{position:absolute;bottom:0;left:0;height:2px;background:#a98955;width:100%}.hint{margin-left:auto;color:#6f7180;font-size:9px}
+.overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.overlay:empty{display:none}.modal{pointer-events:auto;width:min(640px,92vw);max-height:90%;overflow:auto;padding:30px;background:linear-gradient(145deg,#191923f7,#0e1018f7);border:1px solid #625444;box-shadow:0 20px 80px #000c,0 0 0 1px #c29d5630 inset;border-radius:10px;text-align:center;animation:rise .24s ease-out}.modal.wide{width:min(900px,94vw)}@keyframes rise{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}.eyebrow{font:11px 'DM Mono';letter-spacing:3px;color:var(--gold);margin-bottom:12px}.game-title{font:clamp(38px,6vw,66px) Impact,'Arial Black',sans-serif;letter-spacing:3px;color:#eee3ce;text-shadow:0 3px 0 #705a3e,0 0 32px #b78b4d44;line-height:1.1}.subtitle{color:#aaa6a5;font-size:13px;line-height:1.8;margin:14px auto 22px;max-width:480px}.ornament{width:150px;height:1px;background:linear-gradient(90deg,transparent,#b99a64,transparent);margin:20px auto}.btn-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.game-btn{min-width:145px;padding:12px 20px;background:linear-gradient(180deg,#c4a16a,#8b6942);border:1px solid #e3c38a;color:#17131a;font-weight:900;letter-spacing:1px;border-radius:5px;cursor:pointer;transition:.15s;box-shadow:0 4px 0 #493622}.game-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}.game-btn.secondary{background:#20212c;color:#d1c9bc;border-color:#55505a;box-shadow:0 4px 0 #090a10}.game-btn.danger{background:linear-gradient(#9e4653,#6b2836);color:#fff;border-color:#c26c75;box-shadow:0 4px 0 #351620}.controls{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px auto;max-width:430px;text-align:left}.control-line{padding:8px 10px;background:#20212b;border:1px solid #343541;border-radius:4px;color:#b4b3bd;font-size:11px}.control-line b{display:inline-block;width:65px;color:#e7c88d;font-family:'DM Mono';font-weight:500}.reward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px;text-align:left}.reward-card{min-height:210px;position:relative;padding:17px 14px;background:linear-gradient(155deg,#23232e,#13151e);border:1px solid #55505a;border-radius:7px;cursor:pointer;transition:.17s;display:flex;flex-direction:column}.reward-card:hover{transform:translateY(-6px);border-color:#d9b56d;box-shadow:0 9px 30px #0009}.reward-card.grade-B{border-color:#8b6b42}.reward-card.grade-A{border-color:#6e91bd;box-shadow:inset 0 0 22px #4c77a51a}.reward-card.grade-S{border-color:#b083db;box-shadow:inset 0 0 30px #925bc52a}.reward-grade{font:10px 'Consolas','Courier New',monospace;letter-spacing:2px;color:#c2a16d}.grade-A .reward-grade{color:#8fb7e6}.grade-S .reward-grade{color:#c6a1f0}.reward-icon{font-size:37px;margin:14px 0 10px;filter:drop-shadow(0 4px 8px #0009)}.reward-name{font-weight:900;font-size:15px;color:#f0e8dc}.reward-desc{font-size:11px;line-height:1.6;color:#a8a5b0;margin-top:8px}.reward-tag{margin-top:auto;padding-top:12px;font:9px 'Consolas','Courier New',monospace;color:#7e8090;letter-spacing:1px}.section-title{font:22px Impact,'Arial Black',sans-serif;letter-spacing:1px;color:#eee1ca}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}.result-stat{background:#20212b;border:1px solid #3a3946;padding:12px 7px;border-radius:5px}.result-stat small{display:block;color:#9293a1;font:9px 'Consolas','Courier New',monospace;letter-spacing:1px}.result-stat b{display:block;color:#e8d4ae;font:21px 'DM Mono';margin-top:6px}.result-loot{max-height:100px;overflow:auto;color:#a7a5b0;font-size:11px;line-height:1.8}.toast{position:absolute;left:50%;top:92px;transform:translate(-50%,-10px);padding:9px 18px;background:#171923ed;border:1px solid #766044;border-radius:5px;color:#e8d2a9;font-size:12px;opacity:0;transition:.22s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}.boss-hud{position:absolute;left:28%;right:28%;top:82px;text-align:center;pointer-events:none}.boss-hud b{font:12px 'Black Han Sans';letter-spacing:2px;color:#e5c4bd;text-shadow:0 2px #000}.boss-track{height:9px;margin-top:6px;background:#381f2a;border:1px solid #75414a;border-radius:10px;overflow:hidden}.boss-track i{display:block;height:100%;background:linear-gradient(90deg,#9c3049,#ed6b67)}
+@media(max-width:850px){.hud-left{width:125px;left:7px}.hud-right{width:133px;right:7px}.hud-top{padding:10px;gap:8px}.brand-mark{width:150px}.brand-mark b{font-size:13px}.brand-mark small{font-size:8px}.hud-bottom{left:8px;right:8px;gap:6px}.health-wrap{width:190px}.hint{display:none}.reward-grid{gap:7px}.reward-card{padding:12px 9px;min-height:190px}.reward-name{font-size:12px}.reward-desc{font-size:10px}}
+
+/* Skill cooldown readability */
+.skill-chip{height:54px;min-width:132px;padding:6px 10px;display:grid;grid-template-columns:auto 1fr;grid-template-rows:1fr 1fr;column-gap:9px;row-gap:1px;align-items:center;border-color:#57505d;background:linear-gradient(145deg,#1a1b27f2,#10111adf);box-shadow:0 4px 16px #0007}
+.skill-chip .keycap{grid-row:1 / 3;min-width:43px;text-align:center;font-size:12px;padding:7px 5px}
+.skill-name{font-size:11px;font-weight:800;color:#d9d3ca;align-self:end}
+.skill-time{font: bold 13px 'Consolas','Courier New',monospace;color:#ffb7a9;align-self:start}
+.skill-time.ready{color:#a8e8bd;text-shadow:0 0 10px #72e6a455}
+.skill-chip i{height:4px;background:linear-gradient(90deg,#b47750,#f2c17a);box-shadow:0 0 8px #e8b66b66}
+.special-chip{min-width:166px;border-color:#658a91;box-shadow:0 0 16px #6ecbd322,0 4px 16px #0007}
+.special-chip i{background:linear-gradient(90deg,#438f9b,#9be8e7);box-shadow:0 0 9px #6ee5e566}
+.dash-chip{min-width:140px}
+.boss-warning-label{color:#ff5968}
+@media(max-width:850px){.skill-chip{min-width:105px;height:49px;padding:5px 7px}.special-chip{min-width:130px}.skill-name{font-size:10px}.skill-time{font-size:12px}.skill-chip .keycap{min-width:36px;font-size:10px}}
+
+/* ESC field guide / enemy codex */
+.pause-modal{width:min(980px,95vw);max-height:94%;text-align:left;padding:24px 26px;overflow-y:auto}
+.pause-modal>.eyebrow,.pause-modal>.section-title,.pause-modal>.subtitle{text-align:center}
+.pause-modal>.subtitle{margin:8px auto 18px}
+.codex-section{margin:16px 0 20px}
+.codex-section h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 9px;padding-bottom:8px;border-bottom:1px solid #48404a;color:#e4c78f;font-size:14px;letter-spacing:.5px}
+.codex-section h3 span{font:10px 'Consolas',monospace;color:#8e91a0}
+.codex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.codex-card{display:flex;align-items:center;gap:12px;min-height:82px;padding:10px 12px;background:linear-gradient(120deg,#20212c,#141620);border:1px solid #383946;border-radius:6px}
+.codex-icon{width:38px;flex:0 0 38px;text-align:center;font-size:26px;text-shadow:0 0 15px currentColor}
+.codex-copy{min-width:0}
+.codex-copy b{font-size:12px;color:#eee2d1}
+.codex-copy p{margin:4px 0;color:#aaa9b4;font-size:10px;line-height:1.55}
+.codex-copy small{color:#8b8d9c;font:9px 'Consolas',monospace}
+.boss-codex{border-color:#65434d;background:linear-gradient(120deg,#2b1d28,#171620)}
+.boss-codex .codex-icon{font-size:30px}
+@media(max-width:700px){.pause-modal{padding:17px 13px}.codex-grid{grid-template-columns:1fr}.codex-card{min-height:70px}.pause-modal .btn-row{gap:7px}.pause-modal .game-btn{min-width:110px;padding:10px 12px}}
+
+
+/* ESC archive tabs and acquired relic inventory */
+.pause-tabs{display:flex;justify-content:center;gap:9px;margin:2px 0 16px;padding-bottom:12px;border-bottom:1px solid #393743}
+.pause-tab{min-width:170px;padding:11px 18px;border:1px solid #4b4854;border-radius:5px;background:#1a1b26;color:#b9b6c0;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:.15s}
+.pause-tab span{display:inline-grid;place-items:center;min-width:21px;height:21px;margin-left:7px;padding:0 5px;border-radius:20px;background:#30313e;color:#d9c18e;font:10px 'Consolas',monospace}
+.pause-tab:hover{border-color:#a58b63;color:#f0dfc2}
+.pause-tab.active{background:linear-gradient(145deg,#59452f,#342b27);border-color:#c3a16b;color:#f4e5c9;box-shadow:inset 0 0 18px #d4ae5a19,0 0 12px #d4ae5a12}
+.pause-tab.active span{background:#c5a16a;color:#1a1511}
+.pause-content{min-height:230px;max-height:52vh;overflow-y:auto;padding:2px 4px 8px;scrollbar-color:#665744 #151620;scrollbar-width:thin}
+.owned-items-section{margin:8px 0 16px}
+.archive-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 11px;padding-bottom:8px;border-bottom:1px solid #48404a}
+.archive-heading h3{margin:0;color:#e4c78f;font-size:14px}
+.archive-heading span{color:#8e91a0;font:10px 'Consolas',monospace}
+.owned-items-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.owned-item-card{display:flex;align-items:center;gap:11px;position:relative;min-height:80px;padding:11px 13px;background:linear-gradient(120deg,#20212c,#141620);border:1px solid #675139;border-radius:6px}
+.owned-item-card.grade-A{border-color:#6f83aa;background:linear-gradient(120deg,#202b3a,#141923)}
+.owned-item-card.grade-S{border-color:#a985d9;background:linear-gradient(120deg,#30213b,#171521);box-shadow:inset 0 0 18px #925bc51a}
+.owned-item-icon{width:40px;flex:0 0 40px;text-align:center;font-size:27px;filter:drop-shadow(0 3px 7px #0008)}
+.owned-item-copy{min-width:0;flex:1;text-align:left}
+.owned-item-heading{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.owned-item-heading b{color:#eee2d1;font-size:12px}
+.owned-item-grade{font:9px 'Consolas',monospace;color:#c4a16d}
+.grade-A .owned-item-grade{color:#8fb7e6}.grade-S .owned-item-grade{color:#c6a1f0}
+.owned-item-copy p{margin:4px 0;color:#aaa9b4;font-size:10px;line-height:1.5}
+.owned-item-copy small{color:#777c8e;font:9px 'Consolas',monospace}
+.owned-item-count{align-self:flex-start;padding:3px 7px;background:#34313a;border:1px solid #655c62;border-radius:12px;color:#f0dfc2;font:bold 10px 'Consolas',monospace}
+.archive-empty{min-height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px dashed #44414d;border-radius:7px;color:#e0d1b6;text-align:center}
+.archive-empty span{font-size:11px;color:#888b9a}
+@media(max-width:700px){.pause-tabs{gap:6px}.pause-tab{min-width:0;flex:1;padding:10px 8px;font-size:11px}.owned-items-grid{grid-template-columns:1fr}.pause-content{max-height:48vh}}
+
+/* Touch-first controls: enabled only on devices whose primary input is touch. */
+#game{touch-action:none}
+.mobile-controls{display:none;position:absolute;inset:0;z-index:8;pointer-events:none;user-select:none;-webkit-user-select:none}
+body.mobile-device .mobile-controls{display:block}
+.virtual-joystick{position:absolute;left:14px;bottom:12px;width:124px;height:124px;border-radius:50%;pointer-events:auto;touch-action:none;background:radial-gradient(circle,#34374688 0 33%,#15192566 35% 66%,#0b0e18aa 68%);border:1px solid #b9c4d055;box-shadow:0 4px 22px #0008,inset 0 0 18px #9de5ef16;display:grid;place-items:center}
+.joystick-ring{position:absolute;inset:17px;border:1px solid #c6dce055;border-radius:50%;box-shadow:inset 0 0 12px #b5eaf022}
+.joystick-knob{position:absolute;width:43px;height:43px;border-radius:50%;background:linear-gradient(145deg,#d9edf0bb,#78949fa8);border:1px solid #e5fcff99;box-shadow:0 3px 12px #0009,inset 0 0 8px #fff7;transform:translate(0,0);pointer-events:none}
+.joystick-caption{position:absolute;bottom:12px;color:#d5e5e788;font:8px 'Consolas',monospace;letter-spacing:2px;pointer-events:none}
+.mobile-action-buttons{position:absolute;right:14px;bottom:13px;display:flex;align-items:flex-end;gap:9px;pointer-events:auto}
+.mobile-action{width:67px;height:67px;border-radius:50%;border:1px solid #d1b27b99;background:radial-gradient(circle at 35% 25%,#69553dbb,#1a1a25ed 72%);box-shadow:0 4px 18px #000a,inset 0 0 13px #e5c48c20;color:#f2dfbd;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;touch-action:none;user-select:none;-webkit-user-select:none}
+.mobile-action b{font-size:12px;letter-spacing:.5px}
+.mobile-action span{font:10px 'Consolas',monospace;color:#a9e5c1}
+.mobile-action:active{transform:scale(.95);filter:brightness(1.3)}
+.special-action{width:76px;height:76px;border-color:#79cbd4aa;background:radial-gradient(circle at 35% 25%,#355e66dd,#171b26f2 72%);color:#d3fbf8}
+.special-action span{color:#a6e8e7}
+@media (pointer:coarse){.mobile-controls{display:block}}
+@media(max-width:850px){
+  body.mobile-device .hud-bottom{left:151px;right:151px;bottom:13px;gap:6px}
+  body.mobile-device .health-wrap{width:100%;min-width:0;padding:6px 8px;background:#10121bd9}
+  body.mobile-device .hud-bottom .skill-chip,body.mobile-device .hud-bottom .hint{display:none}
+  body.mobile-device .hud-left{top:79px;width:110px;padding:7px;left:7px}
+  body.mobile-device .hud-right{top:79px;width:116px;padding:7px;right:7px}
+  body.mobile-device .stat-grid{gap:4px 3px}
+  body.mobile-device .stat-grid div{padding:4px}
+  body.mobile-device .stat-grid b{font-size:11px}
+  body.mobile-device .panel-title{font-size:8px;padding-bottom:5px;margin-bottom:5px}
+  body.mobile-device .inventory{gap:3px;min-height:32px}
+  body.mobile-device .inventory-item{width:27px;height:27px;font-size:13px}
+}
+@media(max-height:420px) and (pointer:coarse){
+  .virtual-joystick{width:106px;height:106px;left:9px;bottom:7px}
+  .joystick-ring{inset:14px}
+  .joystick-knob{width:37px;height:37px}
+  .mobile-action-buttons{right:9px;bottom:8px;gap:6px}
+  .mobile-action{width:58px;height:58px}
+  .special-action{width:65px;height:65px}
+  body.mobile-device .hud-bottom{left:124px;right:124px;bottom:9px}
+  body.mobile-device .hud-top{height:57px;padding:7px 10px}
+  body.mobile-device .hud-left,body.mobile-device .hud-right{top:62px}
+}
